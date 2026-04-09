@@ -1,0 +1,72 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+**/packages/*
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider
+.idea/
+*.sln.iml
+
+# macOS
+.DS_Store
+
+# Backup files
+*.bak
+*.backup
+*.tmp
+*.log
+
+# Test logs
+/tmp/
+*.log
+
+# 运行时生成的数据目录
+LocationData/
+LocationArchive/
+MediaData/
+
+# 2019 设备记录文件 (运行时生成)
+Version2019Devices.ini
+JT808.Server/Version2019Devices.ini
+
+# 部署包 (本地构建产物, 不入 git; 需要时执行 dotnet publish 重新生成)
+publish/
