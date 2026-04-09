@@ -2,6 +2,22 @@ using JT808.Server;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
+// 兜底: 任何启动期未捕获异常都写到 startup-error.log, 防止 Windows 闪退看不到错误
+AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+{
+    try
+    {
+        var path = Path.Combine(AppContext.BaseDirectory, "startup-error.log");
+        var msg = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] FATAL UnhandledException:\n{e.ExceptionObject}\n\n";
+        File.AppendAllText(path, msg);
+        Console.Error.WriteLine(msg);
+    }
+    catch { }
+};
+
+try
+{
+
 // 加载配置文件
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -130,6 +146,24 @@ finally
 {
     server.Stop();
     Console.WriteLine("服务器已停止");
+}
+
+}
+catch (Exception startupEx)
+{
+    // 启动期任何异常 (配置加载失败/绑定端口失败/路径权限错误等) 都写日志
+    var logPath = Path.Combine(AppContext.BaseDirectory, "startup-error.log");
+    var msg = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] 启动失败:\n{startupEx}\n\n";
+    try { File.AppendAllText(logPath, msg); } catch { }
+    Console.Error.WriteLine();
+    Console.Error.WriteLine("==================== 启动失败 ====================");
+    Console.Error.WriteLine(startupEx);
+    Console.Error.WriteLine("==================================================");
+    Console.Error.WriteLine($"详细日志已写入: {logPath}");
+    Console.Error.WriteLine();
+    Console.Error.WriteLine("按任意键退出...");
+    try { Console.ReadKey(true); } catch { }
+    Environment.Exit(1);
 }
 
 static void ShowStatistics(JT808TcpServer server)
